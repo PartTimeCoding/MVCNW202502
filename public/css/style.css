@@ -3,14 +3,18 @@
 @import url("form.css");
 *{
   box-sizing: border-box;
+  background-color: #F5F0CD;
 }
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Segoe UI Semilight', sans-serif;
   font-size:100%;
   font-size:16px;
   font-size:1em;
   margin:0px;
   padding:0px;
+  fon
+
+
 }
 
 header {
@@ -71,6 +75,9 @@ main {
   position: relative;
   padding:1em;
   min-height: calc(100vh - 154px);
+}
+main h1{
+  color: #2b5c82;
 }
 footer{
   background-color: var(--primary_bg);
