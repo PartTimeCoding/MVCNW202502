@@ -3,6 +3,8 @@
 namespace Controllers\Checkout;
 
 use Controllers\PublicController;
+use Dao\Cart\Cart;
+use Utilities\Security;
 
 class Checkout extends PublicController
 {
@@ -15,17 +17,27 @@ class Checkout extends PublicController
             2.2) Redirigir al usuario a la página de Paypal para que complete el pago.
         
         */
-        $viewData = array();
+        $viewData = array(
+            "carretilla" => Cart::getAuthCart(Security::getUserId())
+        );
         if ($this->isPostBack()) {
             $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
                 "test" . (time() - 10000000),
-                "http://localhost:8080/mvc202403/index.php?page=Checkout_Error",
-                "http://localhost:8080/mvc202403/index.php?page=Checkout_Accept"
+                "http://localhost:64622/mvc202502/index.php?page=Checkout_Error",
+                "http://localhost:64622/mvc202502/index.php?page=Checkout_Accept"
             );
 
-            $PayPalOrder->addItem("Test", "TestItem1", "PRD1", 100, 15, 1, "DIGITAL_GOODS"); //115
-            $PayPalOrder->addItem("Test 2", "TestItem2", "PRD2", 50, 7.5, 2, "DIGITAL_GOODS"); // 115
-            // Total: 230
+            foreach ($viewData["carretilla"] as $producto) {
+                $PayPalOrder->addItem(
+                    $producto["productName"],
+                    $producto["productDescription"],
+                    $producto["productId"],
+                    $producto["crrprc"],
+                    0,
+                    $producto["crrctd"],
+                    "DIGITAL_GOODS"
+                );
+            }
 
             $PayPalRestApi = new \Utilities\PayPal\PayPalRestApi(
                 \Utilities\Context::getContextByKey("PAYPAL_CLIENT_ID"),
