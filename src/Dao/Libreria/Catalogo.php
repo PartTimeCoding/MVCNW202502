@@ -4,12 +4,11 @@ namespace Dao\Libreria;
 
 use Dao\Table;
 
-class Catalogo extends Table
-{
-    public const categorias = [
+class Catalogo extends Table {
+    public const generos = [
         1 => 'Fantasía',
         2 => 'Horror',
-        3 => 'Ciencia Ficción/Distopía',
+        3 => 'Ciencia Ficción',
     ];
 
     public static function ObtenerLibros(): array
@@ -18,10 +17,10 @@ class Catalogo extends Table
             [
                 "id" => 1,
                 "nombreLibro" => "El Principito",
-                "precio" => 100.0,
+                "precio" => "L. 350",
                 "stock" => 100,
                 "autor" => "Antoine de Saint-Exupéry",
-                "categoria" => 1,
+                "genero" => 1,
                 "descripcion" => "Libro animado para niños",
                 "anioPublicacion" => 2000,
                 "editorial" => "HCH",
@@ -30,10 +29,10 @@ class Catalogo extends Table
             [
                 "id" => 2,
                 "nombreLibro" => "Cien Años de Soledad",
-                "precio" => 150.0,
+                "precio" => "L. 500",
                 "stock" => 200,
                 "autor" => "Gabriel García Márquez",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Obra maestra del realismo mágico",
                 "anioPublicacion" => 1967,
                 "editorial" => "Sudamericana",
@@ -42,10 +41,10 @@ class Catalogo extends Table
             [
                 "id" => 3,
                 "nombreLibro" => "Don Quijote de la Mancha",
-                "precio" => 120.0,
+                "precio" => "L. 420",
                 "stock" => 80,
                 "autor" => "Miguel de Cervantes",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Clásico de la literatura española",
                 "anioPublicacion" => 1605,
                 "editorial" => "Francisco de Robles",
@@ -54,10 +53,10 @@ class Catalogo extends Table
             [
                 "id" => 4,
                 "nombreLibro" => "1984",
-                "precio" => 90.0,
+                "precio" => "L. 310",
                 "stock" => 60,
                 "autor" => "George Orwell",
-                "categoria" => 3,
+                "genero" => 3,
                 "descripcion" => "Distopía política sobre vigilancia y control",
                 "anioPublicacion" => 1949,
                 "editorial" => "Secker & Warburg",
@@ -66,10 +65,10 @@ class Catalogo extends Table
             [
                 "id" => 5,
                 "nombreLibro" => "Harry Potter y la piedra filosofal",
-                "precio" => 130.0,
+                "precio" => "L. 600",
                 "stock" => 150,
                 "autor" => "J.K. Rowling",
-                "categoria" => 1,
+                "genero" => 1,
                 "descripcion" => "Inicio de la saga del joven mago",
                 "anioPublicacion" => 1997,
                 "editorial" => "Bloomsbury",
@@ -78,10 +77,10 @@ class Catalogo extends Table
             [
                 "id" => 6,
                 "nombreLibro" => "El Hobbit",
-                "precio" => 110.0,
+                "precio" => "L. 470",
                 "stock" => 75,
                 "autor" => "J.R.R. Tolkien",
-                "categoria" => 1,
+                "genero" => 1,
                 "descripcion" => "Aventura fantástica en la Tierra Media",
                 "anioPublicacion" => 1937,
                 "editorial" => "Allen & Unwin",
@@ -90,10 +89,10 @@ class Catalogo extends Table
             [
                 "id" => 7,
                 "nombreLibro" => "Orgullo y Prejuicio",
-                "precio" => 95.0,
+                "precio" => "L. 320",
                 "stock" => 90,
                 "autor" => "Jane Austen",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Novela romántica clásica inglesa",
                 "anioPublicacion" => 1813,
                 "editorial" => "T. Egerton",
@@ -102,10 +101,10 @@ class Catalogo extends Table
             [
                 "id" => 8,
                 "nombreLibro" => "La Odisea",
-                "precio" => 85.0,
+                "precio" => "L. 290",
                 "stock" => 50,
                 "autor" => "Homero",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Viaje épico del héroe Odiseo",
                 "anioPublicacion" => -800,
                 "editorial" => "Clásicos Griegos",
@@ -114,10 +113,10 @@ class Catalogo extends Table
             [
                 "id" => 9,
                 "nombreLibro" => "Rayuela",
-                "precio" => 140.0,
+                "precio" => "L. 540",
                 "stock" => 60,
                 "autor" => "Julio Cortázar",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Novela experimental e innovadora",
                 "anioPublicacion" => 1963,
                 "editorial" => "Sudamericana",
@@ -126,10 +125,10 @@ class Catalogo extends Table
             [
                 "id" => 10,
                 "nombreLibro" => "El Alquimista",
-                "precio" => 105.0,
+                "precio" => "L. 400",
                 "stock" => 110,
                 "autor" => "Paulo Coelho",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Fábula sobre seguir los sueños",
                 "anioPublicacion" => 1988,
                 "editorial" => "Rocco",
@@ -138,10 +137,10 @@ class Catalogo extends Table
             [
                 "id" => 11,
                 "nombreLibro" => "Fahrenheit 451",
-                "precio" => 98.0,
+                "precio" => "L. 360",
                 "stock" => 85,
                 "autor" => "Ray Bradbury",
-                "categoria" => 3,
+                "genero" => 3,
                 "descripcion" => "Crítica a la censura y quema de libros",
                 "anioPublicacion" => 1953,
                 "editorial" => "Ballantine Books",
@@ -150,10 +149,10 @@ class Catalogo extends Table
             [
                 "id" => 12,
                 "nombreLibro" => "Matar a un ruiseñor",
-                "precio" => 115.0,
+                "precio" => "L. 430",
                 "stock" => 70,
                 "autor" => "Harper Lee",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Novela sobre justicia y racismo",
                 "anioPublicacion" => 1960,
                 "editorial" => "J.B. Lippincott & Co.",
@@ -162,10 +161,10 @@ class Catalogo extends Table
             [
                 "id" => 13,
                 "nombreLibro" => "Drácula",
-                "precio" => 100.0,
+                "precio" => "L. 380",
                 "stock" => 60,
                 "autor" => "Bram Stoker",
-                "categoria" => 3,
+                "genero" => 2,
                 "descripcion" => "Clásico de la literatura gótica",
                 "anioPublicacion" => 1897,
                 "editorial" => "Archibald Constable",
@@ -174,10 +173,10 @@ class Catalogo extends Table
             [
                 "id" => 14,
                 "nombreLibro" => "Los juegos del hambre",
-                "precio" => 125.0,
+                "precio" => "L. 550",
                 "stock" => 100,
                 "autor" => "Suzanne Collins",
-                "categoria" => 3,
+                "genero" => 3,
                 "descripcion" => "Distopía juvenil de supervivencia",
                 "anioPublicacion" => 2008,
                 "editorial" => "Scholastic",
@@ -186,10 +185,10 @@ class Catalogo extends Table
             [
                 "id" => 15,
                 "nombreLibro" => "La sombra del viento",
-                "precio" => 135.0,
+                "precio" => "L. 470",
                 "stock" => 95,
                 "autor" => "Carlos Ruiz Zafón",
-                "categoria" => 2,
+                "genero" => 2,
                 "descripcion" => "Misterio literario en Barcelona",
                 "anioPublicacion" => 2001,
                 "editorial" => "Planeta",
@@ -198,25 +197,22 @@ class Catalogo extends Table
         ];
     }
 
-    public static function ObtenerLibrosFiltrados($categoriaId = null): array
-    {
+    public static function ObtenerLibrosFiltrados($generoId = null): array {
         $todosLosLibros = self::ObtenerLibros();
         $librosFiltrados = [];
 
-        // Normalizamos categoría
-        $categoriaId = (is_numeric($categoriaId)) ? (int)$categoriaId : null;
+        $generoId = (is_numeric($generoId)) ? (int)$generoId : null;
 
         foreach ($todosLosLibros as $libro) {
-            $libro['nombreCategoria'] = self::categorias[$libro['categoria']] ?? 'Desconocida';
-            if ($categoriaId === null || $libro['categoria'] === $categoriaId) {
+            $libro['nombreGenero'] = self::generos[$libro['genero']] ?? 'Desconocido';
+            if ($generoId === null || $libro['genero'] === $generoId) {
                 $librosFiltrados[] = $libro;
             }
         }
         return $librosFiltrados;
     }
 
-    public static function ObtenerCategoriasDisponibles(): array
-    {
-        return self::categorias;
+    public static function ObtenerGenerosDisponibles(): array {
+        return self::generos;
     }
 }
