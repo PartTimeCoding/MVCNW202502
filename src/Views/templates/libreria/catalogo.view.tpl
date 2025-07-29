@@ -1,22 +1,20 @@
 <section>
-    <h2>NegociosWeb</h2>
+    <h2>Catálogo</h2>
     <p>{{mensaje}}</p>
 
-    <!-- Combo box para filtrar por categoría -->
-    <form action="index.php" method="get" style="margin-bottom: 20px; margin-left: 40px;">
+    <form action="index.php" method="get">
         <label for="categoria">Filtrar por categoría:</label>
         <select name="categoria" id="categoria" onchange="this.form.submit()">
-        <option value=""href="index.php?page=Libreria_Catalogo&categoria=1">-- Todas las categorías --</option>
-       <option value="1" {{selected_1}}>Fantasía</option>
-        <option value="2" {{selected_2}}>Horror</option>
-        <option value="3" {{selected_3}}>Comedia</option>
-
-
+            <option value="" {{selected_null}}>-- Todas las categorías --</option>
+            {{foreach categorias}}
+                <option value="{{id}}" {{selected}}>{{nombre}}</option>
+            {{endfor categorias}}
         </select>
+        <input type="hidden" name="page" value="Libreria_Catalogo">
     </form>
 
-
-    <!-- Tarjetas de libros -->
+    <hr>
+   <!-- Tarjetas de libros -->
     <div style="display: flex; flex-wrap: wrap; gap: 60px; margin-left: 40px;">
         {{foreach libreria}}
         <div style="border: 1px solid #ddd; border-radius: 8px; width: 300px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
@@ -34,4 +32,9 @@
         </div>
         {{endfor libreria}}
     </div>
+</section>
+    {{if libreria}}
+    {{else}}
+        <p>No se encontraron libros.</p>
+    {{endif}}
 </section>
