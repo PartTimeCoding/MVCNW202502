@@ -6,13 +6,15 @@ use Controllers\PublicController;
 use Views\Renderer;
 use Dao\Libreria\Catalogo as CatalogoDAO;
 
-class Catalogo extends PublicController {
+class Catalogo extends PublicController
+{
     private string $HolaMessage;
 
-    public function run(): void {
+    public function run(): void
+    {
         // Si 'categoria' no está definida o está vacía, será null
-        $categoriaSeleccionada = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
-            ? $_GET['categoria'] 
+        $categoriaSeleccionada = (isset($_GET['categoria']) && $_GET['categoria'] !== '')
+            ? $_GET['categoria']
             : null;
 
         // Obtener libros según la categoría

@@ -4,14 +4,16 @@ namespace Dao\Libreria;
 
 use Dao\Table;
 
-class Catalogo extends Table {
+class Catalogo extends Table
+{
     public const categorias = [
         1 => 'Fantasía',
         2 => 'Horror',
         3 => 'Ciencia Ficción/Distopía',
     ];
 
-    public static function ObtenerLibros(): array {
+    public static function ObtenerLibros(): array
+    {
         return [
             [
                 "id" => 1,
@@ -196,7 +198,8 @@ class Catalogo extends Table {
         ];
     }
 
-    public static function ObtenerLibrosFiltrados($categoriaId = null): array {
+    public static function ObtenerLibrosFiltrados($categoriaId = null): array
+    {
         $todosLosLibros = self::ObtenerLibros();
         $librosFiltrados = [];
 
@@ -212,7 +215,8 @@ class Catalogo extends Table {
         return $librosFiltrados;
     }
 
-    public static function ObtenerCategoriasDisponibles(): array {
+    public static function ObtenerCategoriasDisponibles(): array
+    {
         return self::categorias;
     }
 }
