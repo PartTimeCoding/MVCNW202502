@@ -10,34 +10,30 @@ class Catalogo extends PublicController {
     private string $HolaMessage;
 
     public function run(): void {
-        // Si 'categoria' no está definida o está vacía, será null
-        $categoriaSeleccionada = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
+        $generoSeleccionado = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
             ? $_GET['categoria'] 
             : null;
 
-        // Obtener libros según la categoría
-        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($categoriaSeleccionada);
+        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($generoSeleccionado);
 
-        // Categorías
-        $categoriasDisponibles = CatalogoDAO::ObtenerCategoriasDisponibles();
+        $generosDisponibles = CatalogoDAO::ObtenerGenerosDisponibles();
 
-        $this->HolaMessage = "Libreria";
+        $this->HolaMessage = "Librería";
 
-        // Construimos categorías para la vista
-        $categoriasRender = [];
-        foreach ($categoriasDisponibles as $id => $nombre) {
-            $categoriasRender[] = [
+        $generosRender = [];
+        foreach ($generosDisponibles as $id => $nombre) {
+            $generosRender[] = [
                 "id" => $id,
                 "nombre" => $nombre,
-                "selected" => ((int)$categoriaSeleccionada === $id) ? 'selected' : ''
+                "selected" => ((int)$generoSeleccionado === $id) ? 'selected' : ''
             ];
         }
 
         $viewData = [
             "mensaje" => $this->HolaMessage,
-            "libreria" => $Libros, // Siempre lleva libros
-            "categorias" => $categoriasRender,
-            "selected_null" => ($categoriaSeleccionada === null) ? 'selected' : ''
+            "libreria" => $Libros,
+            "categorias" => $generosRender,
+            "selected_null" => ($generoSeleccionado === null) ? 'selected' : ''
         ];
 
         Renderer::render("libreria/catalogo", $viewData);
