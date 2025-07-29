@@ -6,7 +6,8 @@ use Controllers\PublicController;
 use Views\Renderer;
 use Dao\Libreria\Catalogo as CatalogoDAO;
 
-class Catalogo extends PublicController {
+class Catalogo extends PublicController
+{
     private string $HolaMessage;
 
     public function run(): void {

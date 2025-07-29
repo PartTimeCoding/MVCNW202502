@@ -11,7 +11,8 @@ class Catalogo extends Table {
         3 => 'Ciencia Ficción',
     ];
 
-    public static function ObtenerLibros(): array {
+    public static function ObtenerLibros(): array
+    {
         return [
             [
                 "id" => 1,
