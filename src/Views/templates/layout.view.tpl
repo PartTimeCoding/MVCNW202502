@@ -9,43 +9,49 @@
   <link rel="stylesheet" href="/{{BASE_DIR}}/public/css/appstyle.css" />
   <script src="https://kit.fontawesome.com/{{FONT_AWESOME_KIT}}.js" crossorigin="anonymous"></script>
   {{foreach SiteLinks}}
-    <link rel="stylesheet" href="/{{~BASE_DIR}}/{{this}}" />
+  <link rel="stylesheet" href="/{{~BASE_DIR}}/{{this}}" />
   {{endfor SiteLinks}}
   {{foreach BeginScripts}}
-    <script src="/{{~BASE_DIR}}/{{this}}"></script>
+  <script src="/{{~BASE_DIR}}/{{this}}"></script>
   {{endfor BeginScripts}}
 </head>
-<body style="background-color: #F5F0CD;">>
-  <header style="background-color: #C83F12;">
-    <input type="checkbox" class="menu_toggle" id="menu_toggle" />
-    <label for="menu_toggle" class="menu_toggle_icon" >
-      <div class="hmb dgn pt-1"></div>
-      <div class="hmb hrz"></div>
-      <div class="hmb dgn pt-2"></div>
-    </label>
-    <h1  >{{SITE_TITLE}}</h1>
+<body style="background-color: #F5F0CD;">
+<header style="background-color: #C83F12;">
+  <input type="checkbox" class="menu_toggle" id="menu_toggle" />
+  <label for="menu_toggle" class="menu_toggle_icon" >
+    <div class="hmb dgn pt-1"></div>
+    <div class="hmb hrz"></div>
+    <div class="hmb dgn pt-2"></div>
+  </label>
+  <!-- SITE_TITLE con icono de carrito -->
+  <h1>
+    {{SITE_TITLE}}
+    <a href="index.php?page=Checkout_Checkout" style="color: #F5F0CD; text-decoration: none; margin-left: 15px;">
+      <i class="fas fa-shopping-cart"></i>
+    </a>
+  </h1>
 
-    <nav id="menu" style="background-color: #C83F12;">
+  <nav id="menu" style="background-color: #C83F12;">
     <ul>
-        <li><a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
-        {{foreach PUBLIC_NAVIGATION}}
-            <li><a href="{{nav_url}}">{{nav_label}}</a></li>
-        {{endfor PUBLIC_NAVIGATION}}
-      </ul>
-    </nav>
-  </header>
+      <li><a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
+      {{foreach PUBLIC_NAVIGATION}}
+      <li><a href="{{nav_url}}">{{nav_label}}</a></li>
+      {{endfor PUBLIC_NAVIGATION}}
+    </ul>
+  </nav>
+</header>
 
-  <main style="color: #C83F12;">
+<main style="color: #C83F12;">
   {{{page_content}}}
-  </main>
+</main>
 
-  <footer style="background-color: #C83F12;">
-    <div>Todo los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
-  </footer>
+<footer style="background-color: #C83F12;">
+  <div>Todo los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
+</footer>
 
-  {{foreach EndScripts}}
-    <script src="/{{~BASE_DIR}}/{{this}}"></script>
-  {{endfor EndScripts}}
+{{foreach EndScripts}}
+<script src="/{{~BASE_DIR}}/{{this}}"></script>
+{{endfor EndScripts}}
 
 </body>
 </html>
