@@ -5,7 +5,9 @@ use Dao\Table;
 
 class Cart extends Table
 {
-
+    /**
+     * Obtiene todos los productos activos con stock ajustado
+     */
     public static function getProductosDisponibles()
     {
         $sqlAllProductos = "SELECT * FROM products WHERE productStatus = 'ACT';";
@@ -19,20 +21,12 @@ class Cart extends Table
             "delta" => \Utilities\Cart\CartFns::getAuthTimeDelta()
         ]);
 
-        $sqlCarretillaAnon = "SELECT productId, SUM(crrctd) AS reserved
-                              FROM carretillaanon
-                              WHERE TIME_TO_SEC(TIMEDIFF(NOW(), crrfching)) <= :delta
-                              GROUP BY productId;";
-        $reservadosAnon = self::obtenerRegistros($sqlCarretillaAnon, [
-            "delta" => \Utilities\Cart\CartFns::getUnAuthTimeDelta()
-        ]);
-
         $productosAjustados = [];
         foreach ($productos as $prod) {
             $productosAjustados[$prod["productId"]] = $prod;
         }
 
-        foreach (array_merge($reservados, $reservadosAnon) as $res) {
+        foreach ($reservados as $res) {
             if (isset($productosAjustados[$res["productId"]])) {
                 $productosAjustados[$res["productId"]]["productStock"] -= $res["reserved"];
             }
@@ -41,14 +35,18 @@ class Cart extends Table
         return array_values($productosAjustados);
     }
 
-
+    /**
+     * Obtiene el detalle de un producto por ID
+     */
     public static function getProductoById($productId)
     {
         $sql = "SELECT * FROM products WHERE productId = :id LIMIT 1;";
         return self::obtenerUnRegistro($sql, ["id" => $productId]);
     }
 
-
+    /**
+     * Obtiene la carretilla de un usuario autenticado
+     */
     public static function getAuthCart($userId)
     {
         $sql = "SELECT c.productId, p.productName, p.productDescription,
@@ -59,7 +57,9 @@ class Cart extends Table
         return self::obtenerRegistros($sql, ["userId" => $userId]);
     }
 
-
+    /**
+     * Agrega o actualiza un producto en la carretilla de usuario autenticado
+     */
     public static function addToAuthCart($productId, $userId, $amount, $price)
     {
         $sql = "INSERT INTO carretilla (userId, productId, crrctd, crrprc, crrfching)

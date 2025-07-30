@@ -30,7 +30,7 @@ abstract class PublicController implements IController
     {
         $this->name = get_class($this);
         \Utilities\Nav::setPublicNavContext();
-        if (\Utilities\Security::isLogged()){
+        if (\Utilities\Security::isLogged()) {
             $layoutFile = \Utilities\Context::getContextByKey("PRIVATE_LAYOUT");
             if ($layoutFile !== "") {
                 \Utilities\Context::setContext(
@@ -60,4 +60,16 @@ abstract class PublicController implements IController
         return $_SERVER["REQUEST_METHOD"] == "POST";
     }
 
+    /**
+     * Renders a view using the Renderer class
+     *
+     * @param string $view     The name of the view
+     * @param array  $viewData Data to pass to the view
+     *
+     * @return void
+     */
+    protected function renderView(string $view, array $viewData = [])
+    {
+        \Views\Renderer::render($view, $viewData);
+    }
 }

@@ -11,21 +11,36 @@ class Checkout extends PublicController
     public function run(): void
     {
         $viewData = [];
+        $finalCarretilla = [];
+        $counter = 1;
+        $total = 0;
 
+        // Obtener la carretilla del usuario autenticado
+        $carretilla = Cart::getAuthCart(Security::getUserId());
 
-        $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
+        // Procesar productos para calcular row, subtotal y total
+        foreach ($carretilla as $prod) {
+            $prod["row"] = $counter;
+            $prod["subtotal"] = number_format($prod["crrprc"] * $prod["crrctd"], 2);
+            $total += $prod["crrprc"] * $prod["crrctd"];
+            $prod["crrprc"] = number_format($prod["crrprc"], 2);
+            $finalCarretilla[] = $prod;
+            $counter++;
+        }
+
+        $viewData["carretilla"] = $finalCarretilla;
+        $viewData["total"] = number_format($total, 2);
 
         if ($this->isPostBack()) {
             $processPayment = true;
 
-
+            // Botones + o -
             if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
                 $productId = intval($_POST["productId"]);
                 $productoDisp = Cart::getProductoById($productId);
 
                 $amount = isset($_POST["removeOne"]) ? -1 : 1;
 
-                // Agregar producto si hay stock
                 if ($amount === 1 && $productoDisp["productStock"] > 0) {
                     Cart::addToAuthCart(
                         $productId,
@@ -34,7 +49,6 @@ class Checkout extends PublicController
                         $productoDisp["productPrice"]
                     );
                 } elseif ($amount === -1) {
-
                     Cart::addToAuthCart(
                         $productId,
                         Security::getUserId(),
@@ -43,20 +57,33 @@ class Checkout extends PublicController
                     );
                 }
 
-
-                $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
+                // Recargar carretilla y recalcular totales
+                $finalCarretilla = [];
+                $counter = 1;
+                $total = 0;
+                $carretilla = Cart::getAuthCart(Security::getUserId());
+                foreach ($carretilla as $prod) {
+                    $prod["row"] = $counter;
+                    $prod["subtotal"] = number_format($prod["crrprc"] * $prod["crrctd"], 2);
+                    $total += $prod["crrprc"] * $prod["crrctd"];
+                    $prod["crrprc"] = number_format($prod["crrprc"], 2);
+                    $finalCarretilla[] = $prod;
+                    $counter++;
+                }
+                $viewData["carretilla"] = $finalCarretilla;
+                $viewData["total"] = number_format($total, 2);
                 $processPayment = false;
             }
 
-            // Proceso de pago con PayPal (opcional)
-            if ($processPayment && !empty($viewData["carretilla"])) {
+            // Proceso de pago con PayPal
+            if ($processPayment && !empty($finalCarretilla)) {
                 $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
                     "order_" . time(),
                     "http://localhost/mvcNW202502/index.php?page=Checkout_Error",
                     "http://localhost/mvcNW202502/index.php?page=Checkout_Accept"
                 );
 
-                foreach ($viewData["carretilla"] as $producto) {
+                foreach ($finalCarretilla as $producto) {
                     $PayPalOrder->addItem(
                         $producto["productName"],
                         $producto["productDescription"] ?? "",
@@ -84,12 +111,7 @@ class Checkout extends PublicController
             }
         }
 
-
-        if (method_exists($this, 'render')) {
-            $this->render("checkout", $viewData);
-        } else {
-            // Si tu controlador no usa "render", ajusta al método de tu framework
-            $this->renderView("checkout", $viewData);
-        }
+        // Renderizar vista
+        $this->renderView("checkout", $viewData);
     }
 }
