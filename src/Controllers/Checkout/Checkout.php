@@ -12,18 +12,20 @@ class Checkout extends PublicController
     {
         $viewData = [];
 
-        // Carretilla del usuario autenticado
+
         $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
 
         if ($this->isPostBack()) {
             $processPayment = true;
 
-            // Control para agregar o remover productos
+
             if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
                 $productId = intval($_POST["productId"]);
                 $productoDisp = Cart::getProductoById($productId);
 
                 $amount = isset($_POST["removeOne"]) ? -1 : 1;
+
+                // Agregar producto si hay stock
                 if ($amount === 1 && $productoDisp["productStock"] > 0) {
                     Cart::addToAuthCart(
                         $productId,
@@ -32,6 +34,7 @@ class Checkout extends PublicController
                         $productoDisp["productPrice"]
                     );
                 } elseif ($amount === -1) {
+
                     Cart::addToAuthCart(
                         $productId,
                         Security::getUserId(),
@@ -40,12 +43,13 @@ class Checkout extends PublicController
                     );
                 }
 
+
                 $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
                 $processPayment = false;
             }
 
             // Proceso de pago con PayPal (opcional)
-            if ($processPayment) {
+            if ($processPayment && !empty($viewData["carretilla"])) {
                 $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
                     "order_" . time(),
                     "http://localhost/mvcNW202502/index.php?page=Checkout_Error",
@@ -80,6 +84,12 @@ class Checkout extends PublicController
             }
         }
 
-        $this->render("checkout", $viewData);
+
+        if (method_exists($this, 'render')) {
+            $this->render("checkout", $viewData);
+        } else {
+            // Si tu controlador no usa "render", ajusta al método de tu framework
+            $this->renderView("checkout", $viewData);
+        }
     }
 }
