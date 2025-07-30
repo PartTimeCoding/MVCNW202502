@@ -4,7 +4,7 @@
     </section>
 
     <section class="grid">
-
+        <!-- Encabezado de la tabla -->
         <div class="row border-b" style="padding: 0.5rem 1rem; align-items: center;">
             <span class="col-1">#</span>
             <span class="col-4">Producto</span>
@@ -13,7 +13,7 @@
             <span class="col-2 right">Subtotal</span>
         </div>
 
-
+        <!-- Lista de productos -->
         {{foreach carretilla}}
         <div class="row border-b" style="padding: 0.5rem 1rem; align-items: center;">
             <span class="col-1">{{row}}</span>
@@ -37,13 +37,13 @@
         </div>
         {{endfor carretilla}}
 
-
+        <!-- Total -->
         <div class="row" style="padding: 0.5rem 1rem; align-items: center;">
             <span class="col-3 offset-7 center">Total</span>
             <span class="col-2 right">{{total}}</span>
         </div>
 
-
+        <!-- Botón de pago -->
         <div class="row">
             <form action="index.php?page=checkout_checkout" method="post" class="col-12 right">
                 <button type="submit">Pagar</button>
