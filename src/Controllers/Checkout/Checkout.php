@@ -10,51 +10,76 @@ class Checkout extends PublicController
 {
     public function run(): void
     {
-        /*
-        1) Mostrar el listado de productos a facturar y los detalles y totales de la proforma.
-        2) Al dar click en Pagar
-            2.1) Crear una orden de Paypal con los productos de la proforma.
-            2.2) Redirigir al usuario a la página de Paypal para que complete el pago.
-        
-        */
-        $viewData = array(
-            "carretilla" => Cart::getAuthCart(Security::getUserId())
-        );
-        if ($this->isPostBack()) {
-            $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
-                "test" . (time() - 10000000),
-                "http://localhost:64622/mvc202502/index.php?page=Checkout_Error",
-                "http://localhost:64622/mvc202502/index.php?page=Checkout_Accept"
-            );
+        $viewData = [];
 
-            foreach ($viewData["carretilla"] as $producto) {
-                $PayPalOrder->addItem(
-                    $producto["productName"],
-                    $producto["productDescription"],
-                    $producto["productId"],
-                    $producto["crrprc"],
-                    0,
-                    $producto["crrctd"],
-                    "DIGITAL_GOODS"
-                );
+        // Carretilla del usuario autenticado
+        $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
+
+        if ($this->isPostBack()) {
+            $processPayment = true;
+
+            // Control para agregar o remover productos
+            if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
+                $productId = intval($_POST["productId"]);
+                $productoDisp = Cart::getProductoById($productId);
+
+                $amount = isset($_POST["removeOne"]) ? -1 : 1;
+                if ($amount === 1 && $productoDisp["productStock"] > 0) {
+                    Cart::addToAuthCart(
+                        $productId,
+                        Security::getUserId(),
+                        $amount,
+                        $productoDisp["productPrice"]
+                    );
+                } elseif ($amount === -1) {
+                    Cart::addToAuthCart(
+                        $productId,
+                        Security::getUserId(),
+                        $amount,
+                        $productoDisp["productPrice"]
+                    );
+                }
+
+                $viewData["carretilla"] = Cart::getAuthCart(Security::getUserId());
+                $processPayment = false;
             }
 
-            $PayPalRestApi = new \Utilities\PayPal\PayPalRestApi(
-                \Utilities\Context::getContextByKey("PAYPAL_CLIENT_ID"),
-                \Utilities\Context::getContextByKey("PAYPAL_CLIENT_SECRET")
-            );
-            $PayPalRestApi->getAccessToken();
-            $response = $PayPalRestApi->createOrder($PayPalOrder);
+            // Proceso de pago con PayPal (opcional)
+            if ($processPayment) {
+                $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
+                    "order_" . time(),
+                    "http://localhost/mvcNW202502/index.php?page=Checkout_Error",
+                    "http://localhost/mvcNW202502/index.php?page=Checkout_Accept"
+                );
 
-            $_SESSION["orderid"] = $response->id;
-            foreach ($response->links as $link) {
-                if ($link->rel == "approve") {
-                    \Utilities\Site::redirectTo($link->href);
+                foreach ($viewData["carretilla"] as $producto) {
+                    $PayPalOrder->addItem(
+                        $producto["productName"],
+                        $producto["productDescription"] ?? "",
+                        $producto["productId"],
+                        $producto["crrprc"],
+                        0,
+                        $producto["crrctd"],
+                        "DIGITAL_GOODS"
+                    );
+                }
+
+                $PayPalRestApi = new \Utilities\PayPal\PayPalRestApi(
+                    \Utilities\Context::getContextByKey("PAYPAL_CLIENT_ID"),
+                    \Utilities\Context::getContextByKey("PAYPAL_CLIENT_SECRET")
+                );
+                $PayPalRestApi->getAccessToken();
+                $response = $PayPalRestApi->createOrder($PayPalOrder);
+
+                $_SESSION["orderid"] = $response->id;
+                foreach ($response->links as $link) {
+                    if ($link->rel === "approve") {
+                        \Utilities\Site::redirectTo($link->href);
+                    }
                 }
             }
-            die();
         }
 
-        \Views\Renderer::render("paypal/checkout", $viewData);
+        $this->render("checkout", $viewData);
     }
 }
