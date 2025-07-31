@@ -1,4 +1,5 @@
 <?php
+
 namespace Dao\Cart;
 
 use Dao\Table;
@@ -8,7 +9,7 @@ class Cart extends Table
     public static function getLibrosDisponibles()
     {
         $sqlAll = "SELECT * FROM libros WHERE libroEstado = 'ACT';";
-        $libros = self::obtenerRegistros($sqlAll);
+        $libros = self::obtenerRegistros($sqlAll, array());
 
         $sqlCrr = "SELECT libroId, SUM(crrctd) AS reserved
                    FROM carretilla
