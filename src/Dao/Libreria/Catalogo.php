@@ -5,10 +5,11 @@ namespace Dao\Libreria;
 use Dao\Table;
 
 class Catalogo extends Table {
+    // Géneros como texto simple
     public const generos = [
-        1 => 'Fantasía',
-        2 => 'Horror',
-        3 => 'Ciencia Ficción',
+        'Fantasía',
+        'Terror',
+        'Ciencia Ficción'
     ];
 
     public static function ObtenerLibros(): array
@@ -20,7 +21,7 @@ class Catalogo extends Table {
                 "precio" => "L. 350",
                 "stock" => 100,
                 "autor" => "Antoine de Saint-Exupéry",
-                "genero" => 1,
+                "genero" => "Fantasía",
                 "descripcion" => "Libro animado para niños",
                 "anioPublicacion" => 2000,
                 "editorial" => "HCH",
@@ -32,7 +33,7 @@ class Catalogo extends Table {
                 "precio" => "L. 500",
                 "stock" => 200,
                 "autor" => "Gabriel García Márquez",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Obra maestra del realismo mágico",
                 "anioPublicacion" => 1967,
                 "editorial" => "Sudamericana",
@@ -44,7 +45,7 @@ class Catalogo extends Table {
                 "precio" => "L. 420",
                 "stock" => 80,
                 "autor" => "Miguel de Cervantes",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Clásico de la literatura española",
                 "anioPublicacion" => 1605,
                 "editorial" => "Francisco de Robles",
@@ -56,7 +57,7 @@ class Catalogo extends Table {
                 "precio" => "L. 310",
                 "stock" => 60,
                 "autor" => "George Orwell",
-                "genero" => 3,
+                "genero" => "Ciencia Ficción",
                 "descripcion" => "Distopía política sobre vigilancia y control",
                 "anioPublicacion" => 1949,
                 "editorial" => "Secker & Warburg",
@@ -68,7 +69,7 @@ class Catalogo extends Table {
                 "precio" => "L. 600",
                 "stock" => 150,
                 "autor" => "J.K. Rowling",
-                "genero" => 1,
+                "genero" => "Fantasía",
                 "descripcion" => "Inicio de la saga del joven mago",
                 "anioPublicacion" => 1997,
                 "editorial" => "Bloomsbury",
@@ -80,7 +81,7 @@ class Catalogo extends Table {
                 "precio" => "L. 470",
                 "stock" => 75,
                 "autor" => "J.R.R. Tolkien",
-                "genero" => 1,
+                "genero" => "Fantasía",
                 "descripcion" => "Aventura fantástica en la Tierra Media",
                 "anioPublicacion" => 1937,
                 "editorial" => "Allen & Unwin",
@@ -92,7 +93,7 @@ class Catalogo extends Table {
                 "precio" => "L. 320",
                 "stock" => 90,
                 "autor" => "Jane Austen",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Novela romántica clásica inglesa",
                 "anioPublicacion" => 1813,
                 "editorial" => "T. Egerton",
@@ -104,7 +105,7 @@ class Catalogo extends Table {
                 "precio" => "L. 290",
                 "stock" => 50,
                 "autor" => "Homero",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Viaje épico del héroe Odiseo",
                 "anioPublicacion" => -800,
                 "editorial" => "Clásicos Griegos",
@@ -116,7 +117,7 @@ class Catalogo extends Table {
                 "precio" => "L. 540",
                 "stock" => 60,
                 "autor" => "Julio Cortázar",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Novela experimental e innovadora",
                 "anioPublicacion" => 1963,
                 "editorial" => "Sudamericana",
@@ -128,7 +129,7 @@ class Catalogo extends Table {
                 "precio" => "L. 400",
                 "stock" => 110,
                 "autor" => "Paulo Coelho",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Fábula sobre seguir los sueños",
                 "anioPublicacion" => 1988,
                 "editorial" => "Rocco",
@@ -140,7 +141,7 @@ class Catalogo extends Table {
                 "precio" => "L. 360",
                 "stock" => 85,
                 "autor" => "Ray Bradbury",
-                "genero" => 3,
+                "genero" => "Ciencia Ficción",
                 "descripcion" => "Crítica a la censura y quema de libros",
                 "anioPublicacion" => 1953,
                 "editorial" => "Ballantine Books",
@@ -152,7 +153,7 @@ class Catalogo extends Table {
                 "precio" => "L. 430",
                 "stock" => 70,
                 "autor" => "Harper Lee",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Novela sobre justicia y racismo",
                 "anioPublicacion" => 1960,
                 "editorial" => "J.B. Lippincott & Co.",
@@ -164,7 +165,7 @@ class Catalogo extends Table {
                 "precio" => "L. 380",
                 "stock" => 60,
                 "autor" => "Bram Stoker",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Clásico de la literatura gótica",
                 "anioPublicacion" => 1897,
                 "editorial" => "Archibald Constable",
@@ -176,7 +177,7 @@ class Catalogo extends Table {
                 "precio" => "L. 550",
                 "stock" => 100,
                 "autor" => "Suzanne Collins",
-                "genero" => 3,
+                "genero" => "Ciencia Ficción",
                 "descripcion" => "Distopía juvenil de supervivencia",
                 "anioPublicacion" => 2008,
                 "editorial" => "Scholastic",
@@ -188,7 +189,7 @@ class Catalogo extends Table {
                 "precio" => "L. 470",
                 "stock" => 95,
                 "autor" => "Carlos Ruiz Zafón",
-                "genero" => 2,
+                "genero" => "Terror",
                 "descripcion" => "Misterio literario en Barcelona",
                 "anioPublicacion" => 2001,
                 "editorial" => "Planeta",
@@ -197,15 +198,14 @@ class Catalogo extends Table {
         ];
     }
 
-    public static function ObtenerLibrosFiltrados($generoId = null): array {
+    public static function ObtenerLibrosFiltrados(?string $generoNombre = null): array {
         $todosLosLibros = self::ObtenerLibros();
         $librosFiltrados = [];
 
-        $generoId = (is_numeric($generoId)) ? (int)$generoId : null;
+        $generoNombre = $generoNombre !== '' ? $generoNombre : null;
 
         foreach ($todosLosLibros as $libro) {
-            $libro['nombreGenero'] = self::generos[$libro['genero']] ?? 'Desconocido';
-            if ($generoId === null || $libro['genero'] === $generoId) {
+            if ($generoNombre === null || $libro['genero'] === $generoNombre) {
                 $librosFiltrados[] = $libro;
             }
         }
@@ -213,6 +213,13 @@ class Catalogo extends Table {
     }
 
     public static function ObtenerGenerosDisponibles(): array {
-        return self::generos;
+        $todosLosLibros = self::ObtenerLibros();
+        $generos = [];
+        foreach ($todosLosLibros as $libro) {
+            if (!in_array($libro['genero'], $generos)) {
+                $generos[] = $libro['genero'];
+            }
+        }
+        return $generos;
     }
 }
