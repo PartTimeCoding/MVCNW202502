@@ -1,49 +1,46 @@
 <section class="container-l">
     <section class="depth-4">
-        <h1>Checkout</h1>
+        <h1>Carretilla de Libros</h1>
     </section>
 
     <section class="grid">
-        <!-- Encabezado de la tabla -->
         <div class="row border-b" style="padding: 0.5rem 1rem; align-items: center;">
             <span class="col-1">#</span>
-            <span class="col-4">Producto</span>
+            <span class="col-4">Libro</span>
             <span class="col-2 right">Precio</span>
             <span class="col-3 center">Cantidad</span>
             <span class="col-2 right">Subtotal</span>
         </div>
 
-        <!-- Lista de productos -->
-        {{foreach carretilla}}
+
+        {{foreach libro in carretilla}}
         <div class="row border-b" style="padding: 0.5rem 1rem; align-items: center;">
-            <span class="col-1">{{row}}</span>
-            <span class="col-4">{{productName}}</span>
-            <span class="col-2 right">{{crrprc}}</span>
+            <span class="col-1">{{libro.row}}</span>
+            <span class="col-4">{{libro.libroNombre}}</span>
+            <span class="col-2 right">{{libro.crrprc}}</span>
             <span class="col-3 center">
         <form action="index.php?page=checkout_checkout" method="post">
-          <input type="hidden" name="productId" value="{{productId}}" />
+          <input type="hidden" name="productId" value="{{libro.libroId}}" />
           <button type="submit" name="removeOne" class="circle">
             <i class="fa-solid fa-minus"></i>
           </button>
-          <span style="padding: 0.25rem 0.5rem;">{{crrctd}}</span>
+          <span style="padding: 0.25rem 0.5rem;">{{libro.crrctd}}</span>
           <button type="submit" name="addOne" class="circle">
             <i class="fa-solid fa-plus"></i>
           </button>
         </form>
       </span>
-            <span class="col-2 right">
-        {{subtotal}}
-      </span>
+            <span class="col-2 right">{{libro.subtotal}}</span>
         </div>
-        {{endfor carretilla}}
+        {{endfor}}
 
-        <!-- Total -->
+
         <div class="row" style="padding: 0.5rem 1rem; align-items: center;">
             <span class="col-3 offset-7 center">Total</span>
             <span class="col-2 right">{{total}}</span>
         </div>
 
-        <!-- Botón de pago -->
+
         <div class="row">
             <form action="index.php?page=checkout_checkout" method="post" class="col-12 right">
                 <button type="submit">Pagar</button>

@@ -4,33 +4,32 @@ namespace Utilities\Cart;
 class CartFns
 {
     /**
-     * Tiempo máximo (en segundos) que una carretilla de usuario autenticado
-     * puede reservar productos (6 horas).
+     * Tiempo válido para mantener productos en la carretilla de usuarios autenticados (6 horas)
      */
     public static function getAuthTimeDelta()
     {
-        return 21600; // 6 horas
+        return 21600; // 6 * 60 * 60
     }
 
     /**
-     * Tiempo máximo (en segundos) que una carretilla anónima
-     * puede reservar productos (10 minutos).
+     * Tiempo válido para mantener productos en la carretilla anónima (10 minutos)
      */
     public static function getUnAuthTimeDelta()
     {
-        return 600; // 10 minutos
+        return 600; // 10 * 60
     }
 
     /**
-     * Genera o recupera el código de carrito anónimo para un usuario no logueado.
+     * Devuelve un código único para la carretilla anónima
      */
     public static function getAnnonCartCode()
     {
         if (isset($_SESSION["annonCartCode"])) {
             return $_SESSION["annonCartCode"];
         }
+
         $_SESSION["annonCartCode"] = substr(
-            md5("cart202502" . time() . random_int(10000, 99999)),
+            md5("libroscart_" . time() . random_int(10000, 99999)),
             0,
             128
         );

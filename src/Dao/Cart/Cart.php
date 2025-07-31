@@ -5,72 +5,68 @@ use Dao\Table;
 
 class Cart extends Table
 {
-    /**
-     * Obtiene todos los productos activos con stock ajustado
-     */
-    public static function getProductosDisponibles()
+    public static function getLibrosDisponibles()
     {
-        $sqlAllProductos = "SELECT * FROM products WHERE productStatus = 'ACT';";
-        $productos = self::obtenerRegistros($sqlAllProductos);
+        $sqlAll = "SELECT * FROM libros WHERE libroEstado = 'ACT';";
+        $libros = self::obtenerRegistros($sqlAll);
 
-        $sqlCarretilla = "SELECT productId, SUM(crrctd) AS reserved
-                          FROM carretilla
-                          WHERE TIME_TO_SEC(TIMEDIFF(NOW(), crrfching)) <= :delta
-                          GROUP BY productId;";
-        $reservados = self::obtenerRegistros($sqlCarretilla, [
+        $sqlCrr = "SELECT libroId, SUM(crrctd) AS reserved
+                   FROM carretilla
+                   WHERE TIME_TO_SEC(TIMEDIFF(NOW(), crrfching)) <= :delta
+                   GROUP BY libroId;";
+        $resAut = self::obtenerRegistros($sqlCrr, [
             "delta" => \Utilities\Cart\CartFns::getAuthTimeDelta()
         ]);
 
-        $productosAjustados = [];
-        foreach ($productos as $prod) {
-            $productosAjustados[$prod["productId"]] = $prod;
+        $sqlAnon = "SELECT libroId, SUM(crrctd) AS reserved
+                    FROM carretillaanon
+                    WHERE TIME_TO_SEC(TIMEDIFF(NOW(), crrfching)) <= :delta
+                    GROUP BY libroId;";
+        $resAnon = self::obtenerRegistros($sqlAnon, [
+            "delta" => \Utilities\Cart\CartFns::getUnAuthTimeDelta()
+        ]);
+
+        $librosFinal = [];
+        foreach ($libros as $libro) {
+            $librosFinal[$libro["libroId"]] = $libro;
         }
 
-        foreach ($reservados as $res) {
-            if (isset($productosAjustados[$res["productId"]])) {
-                $productosAjustados[$res["productId"]]["productStock"] -= $res["reserved"];
+        foreach (array_merge($resAut, $resAnon) as $res) {
+            if (isset($librosFinal[$res["libroId"]])) {
+                $librosFinal[$res["libroId"]]["libroStock"] -= $res["reserved"];
             }
         }
 
-        return array_values($productosAjustados);
+        return array_values($librosFinal);
     }
 
-    /**
-     * Obtiene el detalle de un producto por ID
-     */
-    public static function getProductoById($productId)
+    public static function getLibroById($libroId)
     {
-        $sql = "SELECT * FROM products WHERE productId = :id LIMIT 1;";
-        return self::obtenerUnRegistro($sql, ["id" => $productId]);
+        $sql = "SELECT * FROM libros WHERE libroId = :id LIMIT 1;";
+        return self::obtenerUnRegistro($sql, ["id" => $libroId]);
     }
 
-    /**
-     * Obtiene la carretilla de un usuario autenticado
-     */
-    public static function getAuthCart($userId)
+    public static function getAuthCart($usercod)
     {
-        $sql = "SELECT c.productId, p.productName, p.productDescription,
+        $sql = "SELECT c.libroId, l.libroNombre, l.libroDescripcion,
                        c.crrctd, c.crrprc
                 FROM carretilla c
-                INNER JOIN products p ON p.productId = c.productId
-                WHERE c.userId = :userId;";
-        return self::obtenerRegistros($sql, ["userId" => $userId]);
+                INNER JOIN libros l ON l.libroId = c.libroId
+                WHERE c.usercod = :usercod;";
+        return self::obtenerRegistros($sql, ["usercod" => $usercod]);
     }
 
-    /**
-     * Agrega o actualiza un producto en la carretilla de usuario autenticado
-     */
-    public static function addToAuthCart($productId, $userId, $amount, $price)
+    public static function addToAuthCart($libroId, $usercod, $amount, $price)
     {
-        $sql = "INSERT INTO carretilla (userId, productId, crrctd, crrprc, crrfching)
-                VALUES (:userId, :productId, :amount, :price, NOW())
+        $sql = "INSERT INTO carretilla (usercod, libroId, crrctd, crrprc, crrfching)
+                VALUES (:usercod, :libroId, :amount, :price, NOW())
                 ON DUPLICATE KEY UPDATE crrctd = crrctd + :amount, crrfching = NOW();";
 
         return self::executeNonQuery($sql, [
-            "userId"    => $userId,
-            "productId" => $productId,
-            "amount"    => $amount,
-            "price"     => $price
+            "usercod" => $usercod,
+            "libroId" => $libroId,
+            "amount"  => $amount,
+            "price"   => $price
         ]);
     }
 }

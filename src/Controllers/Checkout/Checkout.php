@@ -15,16 +15,14 @@ class Checkout extends PublicController
         $counter = 1;
         $total = 0;
 
-        // Obtener la carretilla del usuario autenticado
         $carretilla = Cart::getAuthCart(Security::getUserId());
 
-        // Procesar productos para calcular row, subtotal y total
-        foreach ($carretilla as $prod) {
-            $prod["row"] = $counter;
-            $prod["subtotal"] = number_format($prod["crrprc"] * $prod["crrctd"], 2);
-            $total += $prod["crrprc"] * $prod["crrctd"];
-            $prod["crrprc"] = number_format($prod["crrprc"], 2);
-            $finalCarretilla[] = $prod;
+        foreach ($carretilla as $libro) {
+            $libro["row"] = $counter;
+            $libro["subtotal"] = number_format($libro["crrprc"] * $libro["crrctd"], 2);
+            $total += $libro["crrprc"] * $libro["crrctd"];
+            $libro["crrprc"] = number_format($libro["crrprc"], 2);
+            $finalCarretilla[] = $libro;
             $counter++;
         }
 
@@ -34,48 +32,48 @@ class Checkout extends PublicController
         if ($this->isPostBack()) {
             $processPayment = true;
 
-            // Botones + o -
             if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
-                $productId = intval($_POST["productId"]);
-                $productoDisp = Cart::getProductoById($productId);
-
+                $libroId = intval($_POST["productId"]);
+                $libro = Cart::getLibroById($libroId);
                 $amount = isset($_POST["removeOne"]) ? -1 : 1;
 
-                if ($amount === 1 && $productoDisp["productStock"] > 0) {
+                if ($amount === 1 && $libro["libroStock"] > 0) {
                     Cart::addToAuthCart(
-                        $productId,
+                        $libroId,
                         Security::getUserId(),
                         $amount,
-                        $productoDisp["productPrice"]
+                        $libro["libroPrecio"]
                     );
                 } elseif ($amount === -1) {
                     Cart::addToAuthCart(
-                        $productId,
+                        $libroId,
                         Security::getUserId(),
                         $amount,
-                        $productoDisp["productPrice"]
+                        $libro["libroPrecio"]
                     );
                 }
 
-                // Recargar carretilla y recalcular totales
+                // Recalcular carretilla
                 $finalCarretilla = [];
                 $counter = 1;
                 $total = 0;
                 $carretilla = Cart::getAuthCart(Security::getUserId());
-                foreach ($carretilla as $prod) {
-                    $prod["row"] = $counter;
-                    $prod["subtotal"] = number_format($prod["crrprc"] * $prod["crrctd"], 2);
-                    $total += $prod["crrprc"] * $prod["crrctd"];
-                    $prod["crrprc"] = number_format($prod["crrprc"], 2);
-                    $finalCarretilla[] = $prod;
+
+                foreach ($carretilla as $libro) {
+                    $libro["row"] = $counter;
+                    $libro["subtotal"] = number_format($libro["crrprc"] * $libro["crrctd"], 2);
+                    $total += $libro["crrprc"] * $libro["crrctd"];
+                    $libro["crrprc"] = number_format($libro["crrprc"], 2);
+                    $finalCarretilla[] = $libro;
                     $counter++;
                 }
+
                 $viewData["carretilla"] = $finalCarretilla;
                 $viewData["total"] = number_format($total, 2);
                 $processPayment = false;
             }
 
-            // Proceso de pago con PayPal
+            // PayPal (opcional)
             if ($processPayment && !empty($finalCarretilla)) {
                 $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
                     "order_" . time(),
@@ -83,14 +81,14 @@ class Checkout extends PublicController
                     "http://localhost/mvcNW202502/index.php?page=Checkout_Accept"
                 );
 
-                foreach ($finalCarretilla as $producto) {
+                foreach ($finalCarretilla as $libro) {
                     $PayPalOrder->addItem(
-                        $producto["productName"],
-                        $producto["productDescription"] ?? "",
-                        $producto["productId"],
-                        $producto["crrprc"],
+                        $libro["libroNombre"],
+                        $libro["libroDescripcion"] ?? "",
+                        $libro["libroId"],
+                        $libro["crrprc"],
                         0,
-                        $producto["crrctd"],
+                        $libro["crrctd"],
                         "DIGITAL_GOODS"
                     );
                 }
@@ -111,7 +109,6 @@ class Checkout extends PublicController
             }
         }
 
-        // Renderizar vista
         $this->renderView("checkout", $viewData);
     }
 }
