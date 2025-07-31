@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/{{BASE_DIR}}/public/css/appstyle.css" />
-  <script src="https://kit.fontawesome.com/{{FONT_AWESOME_KIT}}.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/ec916f3a27.js" crossorigin="anonymous"></script>
   {{foreach SiteLinks}}
   <link rel="stylesheet" href="/{{~BASE_DIR}}/{{this}}" />
   {{endfor SiteLinks}}
@@ -36,6 +36,8 @@
       </ul>
     </nav>
     {{with login}}
+    <span class="cart-container"><a href="index.php?page=checkout_checkout" style="text-decoration: none; color: inherit;">
+    <i class="fa-solid fa-cart-shopping"></i>{{if ~CART_ITEMS}}{{~CART_ITEMS}}{{endif ~CART_ITEMS}}</a></span>
     <span class="username">{{userName}} <a href="index.php?page=sec_logout"><i class="fas fa-sign-out-alt"></i></a></span>
     {{endwith login}}
   </header>
@@ -43,7 +45,7 @@
     {{{page_content}}}
   </main>
   <footer>
-    <div>Todo los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
+    <div>Todos los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
   </footer>
   {{foreach EndScripts}}
   <script src="/{{~BASE_DIR}}/{{this}}"></script>

@@ -2,23 +2,20 @@
 
 namespace Dao\Libreria\Historial;
 
-use Dao\Table;
-
-class Transacciones extends Table
+class Transacciones extends \Dao\Table
 {
-    public static function obtenerHistorialPorUsuario($userId)
+    public static function crearTransaccion($datos)
     {
-        return self::obtenerRegistros(
-            "SELECT * FROM transacciones WHERE usercod = :userId ORDER BY fecha DESC",
-            ["userId" => $userId]
-        );
-    }
+        $sql = "INSERT INTO transacciones 
+                (ordenId, orderjson) 
+                VALUES 
+                (:ordenId, :orderjson)";
 
-    public static function obtenerHistorialCompleto()
-    {
-        return self::obtenerRegistros(
-            "SELECT * FROM transacciones ORDER BY fecha DESC",
-            []
-        );
+        $params = [
+            "ordenId" => $datos['ordenId'],
+            "orderjson" => json_encode($datos['orderjson'])
+        ];
+
+        return self::executeNonQuery($sql, $params);
     }
 }

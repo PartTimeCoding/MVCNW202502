@@ -21,6 +21,6 @@ CREATE TABLE `transacciones` (
     `transaccionId` INT AUTO_INCREMENT PRIMARY KEY,
     `ordenId` INT NOT NULL,
     `fechaTransaccion` DATETIME DEFAULT NOW(),
-    `estado` ENUM('Aprobado', 'Rechazado', 'pendiente'),
+    `orderjson` JSON COMMENT 'Aqui va almacenado el orderJSON de la transacccion para fines de referencia contable.',
     FOREIGN KEY (`ordenId`) REFERENCES `ordenes`(`ordenId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
