@@ -1,19 +1,38 @@
-<?php 
+<?php
 namespace Utilities\Cart;
 
-class CartFns {
-
+class CartFns
+{
+    /**
+     * Tiempo válido para mantener productos en la carretilla de usuarios autenticados (6 horas)
+     */
     public static function getAuthTimeDelta()
     {
-        return 21600; // 6 * 60 * 60; // horas * minutos * segundo
-        // No puede ser mayor a 34 días
+        return 21600; // 6 * 60 * 60
     }
 
+    /**
+     * Tiempo válido para mantener productos en la carretilla anónima (10 minutos)
+     */
     public static function getUnAuthTimeDelta()
     {
-        return 600 ;// 10 * 60; //h , m, s
-        // No puede ser mayor a 34 días
+        return 600; // 10 * 60
+    }
+
+    /**
+     * Devuelve un código único para la carretilla anónima
+     */
+    public static function getAnnonCartCode()
+    {
+        if (isset($_SESSION["annonCartCode"])) {
+            return $_SESSION["annonCartCode"];
+        }
+
+        $_SESSION["annonCartCode"] = substr(
+            md5("libroscart_" . time() . random_int(10000, 99999)),
+            0,
+            128
+        );
+        return $_SESSION["annonCartCode"];
     }
 }
-
-?>
