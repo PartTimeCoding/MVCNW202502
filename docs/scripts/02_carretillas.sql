@@ -1,36 +1,46 @@
 CREATE TABLE
-    `products` (
-        `productId` int(11) NOT NULL AUTO_INCREMENT,
-        `productName` varchar(255) NOT NULL,
-        `productDescription` text NOT NULL,
-        `productPrice` decimal(10, 2) NOT NULL,
-        `productImgUrl` varchar(255) NOT NULL,
-        `productStock` int(11) NOT NULL DEFAULT 0,
-        `productStatus` char(3) NOT NULL,
-        PRIMARY KEY (`productId`)
+    `libros` (
+        `libroId` int(11) NOT NULL AUTO_INCREMENT,
+        `libroNombre` varchar(255) NOT NULL,
+        `libroDescripcion` text NOT NULL,
+        `libroAñoPublicacion` int(4) NOT NULL,
+        `autorId` INT NOT NULL,
+        `editorialId` INT NOT NULL,
+        `libroGenero` varchar(100) NOT NULL,
+        `libroPrecio` decimal(10, 2) NOT NULL,
+        `libroImgUrl` varchar(255) NOT NULL,
+        `libroStock` int(11) NOT NULL DEFAULT 0,
+        `libroEstado` char(3) NOT NULL,
+        PRIMARY KEY (`libroId`)
     ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE `libros`
+ADD CONSTRAINT `fk_libro_autor` 
+FOREIGN KEY (`autorId`) REFERENCES `autores`(`autorId`),
+ADD CONSTRAINT `fk_libro_editorial` 
+FOREIGN KEY (`editorialId`) REFERENCES `editoriales`(`editorialId`);
 
 CREATE TABLE
     `carretilla` (
         `usercod` BIGINT(10) NOT NULL,
-        `productId` int(11) NOT NULL,
-        `crrctd` INT(5) NOT NULL,
-        `crrprc` DECIMAL(12, 2) NOT NULL,
-        `crrfching` DATETIME NOT NULL,
-        PRIMARY KEY (`usercod`, `productId`),
-        INDEX `productId_idx` (`productId` ASC),
+         `libroId` int(11) NOT NULL,
+        `crrctd` INT(5) NOT NULL COMMENT 'Cantidad del libro',
+        `crrprc` DECIMAL(12, 2) NOT NULL COMMENT 'Precio del libro',
+        `crrfching` DATETIME NOT NULL COMMENT 'Fecha cuando se agregó',
+        PRIMARY KEY (`usercod`, `libroId`),
+        INDEX `libroId_idx` (`libroId` ASC),
         CONSTRAINT `carretilla_user_key` FOREIGN KEY (`usercod`) REFERENCES `usuario` (`usercod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        CONSTRAINT `carretilla_prd_key` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+        CONSTRAINT `carretilla_prd_key` FOREIGN KEY (`libroId`) REFERENCES `libros` (`libroId`) ON DELETE NO ACTION ON UPDATE NO ACTION
     );
 
 CREATE TABLE
     `carretillaanon` (
         `anoncod` varchar(128) NOT NULL,
-        `productId` bigint(18) NOT NULL,
+        `libroId` int(11) NOT NULL,
         `crrctd` int(5) NOT NULL,
         `crrprc` decimal(12, 2) NOT NULL,
         `crrfching` datetime NOT NULL,
-        PRIMARY KEY (`anoncod`, `productId`),
-        KEY `productId_idx` (`productId`),
-        CONSTRAINT `carretillaanon_prd_key` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+        PRIMARY KEY (`anoncod`, `libroId`),
+        KEY `libroId_idx` (`libroId`),
+        CONSTRAINT `carretillaanon_prd_key` FOREIGN KEY (`libroId`) REFERENCES `libros` (`libroId`) ON DELETE NO ACTION ON UPDATE NO ACTION
     );
