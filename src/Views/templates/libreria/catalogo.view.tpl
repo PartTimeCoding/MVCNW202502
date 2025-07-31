@@ -1,40 +1,37 @@
 <section>
-    <h2>Catálogo</h2>
+    <h2>Catalogos de Libros</h2>
     <p>{{mensaje}}</p>
 
-    <form action="index.php" method="get">
-        <label for="categoria">Filtrar por categoría:</label>
-        <select name="categoria" id="categoria" onchange="this.form.submit()">
-            <option value="" {{selected_null}}>-- Todas las categorías --</option>
-            {{foreach categorias}}
-                <option value="{{id}}" {{selected}}>{{nombre}}</option>
-            {{endfor categorias}}
-        </select>
-        <input type="hidden" name="page" value="Libreria_Catalogo">
-    </form>
+ <form method="GET" style="margin-bottom: 20px; text-align: center;">
+    <label for="categoria">Filtrar por categoría:</label>
+    <select name="categoria" id="categoria" onchange="this.form.submit()" style="padding: 5px 10px; margin-left: 10px;">
+        <option value="" {{selected_categoria_null}}>Todas</option>
+        {{foreach categorias}}
+            <option value="{{id}}" {{selected}}>{{nombre}}</option>
+        {{endfor categorias}}
+    </select>
+    <input type="hidden" name="page" value="Libreria_Catalogo">
+</form>
 
-    <hr>
-   <!-- Tarjetas de libros -->
-    <div style="display: flex; flex-wrap: wrap; gap: 60px; margin-left: 40px;">
-        {{foreach libreria}}
-        <div style="border: 1px solid #ddd; border-radius: 8px; width: 300px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
-            <img src="https://picsum.photos/300/180?random={{id}}" alt="Imagen del libro" style="width: 100%; height: auto;">
+
+    <!-- Tarjetas de libros -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        {{foreach libros}}
+        <div style="border: 1px solid #ccc; border-radius: 10px; width: 280px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden;">
+            <img src="{{libroImgUrl}}" alt="Portada del libro" style="width: 100%; height: 180px; object-fit: cover;">
             <div style="padding: 15px;">
-                <h3 style="margin: 0 0 10px 0;">{{nombreLibro}}</h3>
-                <p><strong>Precio:</strong> ${{precio}}</p>
-                <p><strong>Stock:</strong> {{stock}}</p>
-                <p><strong>Autor:</strong> {{autor}}</p>
-                <p><strong>Categoría:</strong> {{categoria}}</p>
-                <p><strong>Año:</strong> {{anioPublicacion}}</p>
-                <p><strong>Editorial:</strong> {{editorial}}</p>
-                <p style="font-size: 0.9em; color: #555;"><em>{{descripcion}}</em></p>
+                <h3 style="margin: 0 0 10px 0;">{{libroNombre}}</h3>
+                <p><strong>Descripción:</strong> {{libroDescripcion}}</p>
+                <p><strong>Año:</strong> {{libroAñoPublicacion}}</p>
+                <p><strong>Autor ID:</strong> {{autorId}}</p>
+                <p><strong>Editorial ID:</strong> {{editorialId}}</p>
+                <p><strong>Género:</strong> {{libroGenero}}</p>
+                <p><strong>Precio:</strong> ${{libroPrecio}}</p>
+                <p><strong>Stock:</strong> {{libroStock}}</p>
+                <p><strong>Estado:</strong> {{libroEstado}}</p>
+                <p style="font-size: 0.8em; color: #888;">ID: {{libroid}}</p>
             </div>
         </div>
-        {{endfor libreria}}
+        {{endfor libros}}
     </div>
-</section>
-    {{if libreria}}
-    {{else}}
-        <p>No se encontraron libros.</p>
-    {{endif}}
 </section>
