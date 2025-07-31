@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{SITE_TITLE}}</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Outfit:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/{{BASE_DIR}}/public/css/appstyle.css" />
-  <script src="https://kit.fontawesome.com/{{FONT_AWESOME_KIT}}.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/ec916f3a27.js" crossorigin="anonymous"></script>
   {{foreach SiteLinks}}
     <link rel="stylesheet" href="/{{~BASE_DIR}}/{{this}}" />
   {{endfor SiteLinks}}
@@ -15,37 +15,34 @@
     <script src="/{{~BASE_DIR}}/{{this}}"></script>
   {{endfor BeginScripts}}
 </head>
-<body style="background-color: #F5F0CD;">>
-  <header style="background-color: #C83F12;">
+<body>
+  <header>
     <input type="checkbox" class="menu_toggle" id="menu_toggle" />
     <label for="menu_toggle" class="menu_toggle_icon" >
       <div class="hmb dgn pt-1"></div>
       <div class="hmb hrz"></div>
       <div class="hmb dgn pt-2"></div>
     </label>
-    <h1  >{{SITE_TITLE}}</h1>
-
-    <nav id="menu" style="background-color: #C83F12;">
-    <ul>
+    <h1>{{SITE_TITLE}}</h1>
+    <nav id="menu">
+      <ul>
         <li><a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
         {{foreach PUBLIC_NAVIGATION}}
             <li><a href="{{nav_url}}">{{nav_label}}</a></li>
         {{endfor PUBLIC_NAVIGATION}}
       </ul>
     </nav>
+    <span class="cart-container"><a href="index.php?page=checkout_checkout" style="text-decoration: none; color: inherit;">
+    <i class="fa-solid fa-cart-shopping"></i>{{if ~CART_ITEMS}}{{~CART_ITEMS}}{{endif ~CART_ITEMS}}</a></span>
   </header>
-
-  <main style="color: #C83F12;">
+  <main>
   {{{page_content}}}
   </main>
-
-  <footer style="background-color: #C83F12;">
-    <div>Todo los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
+  <footer>
+    <div>Todos los Derechos Reservados {{~CURRENT_YEAR}} &copy;</div>
   </footer>
-
   {{foreach EndScripts}}
     <script src="/{{~BASE_DIR}}/{{this}}"></script>
   {{endfor EndScripts}}
-
 </body>
 </html>
