@@ -6,35 +6,41 @@ use Controllers\PublicController;
 use Views\Renderer;
 use Dao\Libreria\Catalogo as CatalogoDAO;
 
-class Catalogo extends PublicController
-{
-    private string $HolaMessage;
-
+class Catalogo extends PublicController {
     public function run(): void {
-        $generoSeleccionado = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $categoriaSeleccionada = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
             ? $_GET['categoria'] 
             : null;
 
-        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($generoSeleccionado);
+        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($categoriaSeleccionada);
+        $categoriasDisponibles = CatalogoDAO::ObtenerGenerosDisponibles();
 
-        $generosDisponibles = CatalogoDAO::ObtenerGenerosDisponibles();
-
-        $this->HolaMessage = "Librería";
-
-        $generosRender = [];
-        foreach ($generosDisponibles as $id => $nombre) {
-            $generosRender[] = [
-                "id" => $id,
-                "nombre" => $nombre,
-                "selected" => ((int)$generoSeleccionado === $id) ? 'selected' : ''
+        $categoriasRender = [];
+        foreach ($categoriasDisponibles as $nombreGenero) {
+            $categoriasRender[] = [
+                "id" => $nombreGenero,  // usar el nombre como id
+                "nombre" => $nombreGenero,
+                "selected" => ($categoriaSeleccionada === $nombreGenero) ? 'selected' : ''
             ];
         }
 
+        $carritoCount = 0;
+        if (isset($_SESSION["carrito"])) {
+            foreach ($_SESSION["carrito"] as $item) {
+                $carritoCount += $item["cantidad"];
+            }
+        }
+
         $viewData = [
-            "mensaje" => $this->HolaMessage,
+            "mensaje" => "Librería",
             "libreria" => $Libros,
-            "categorias" => $generosRender,
-            "selected_null" => ($generoSeleccionado === null) ? 'selected' : ''
+            "categorias" => $categoriasRender,
+            "selected_null" => ($categoriaSeleccionada === null) ? 'selected' : '',
+            "carrito_count" => $carritoCount
         ];
 
         Renderer::render("libreria/catalogo", $viewData);
