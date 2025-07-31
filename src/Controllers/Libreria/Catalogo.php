@@ -12,19 +12,19 @@ class Catalogo extends PublicController {
             session_start();
         }
 
-        $categoriaSeleccionada = (isset($_GET['categoria']) && $_GET['categoria'] !== '') 
-            ? $_GET['categoria'] 
+        $generoSeleccionado = (isset($_GET['genero']) && $_GET['genero'] !== '') 
+            ? $_GET['genero'] 
             : null;
 
-        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($categoriaSeleccionada);
-        $categoriasDisponibles = CatalogoDAO::ObtenerGenerosDisponibles();
+        $Libros = CatalogoDAO::ObtenerLibrosFiltrados($generoSeleccionado);
+        $generosDisponibles = CatalogoDAO::ObtenerGenerosDisponibles();
 
-        $categoriasRender = [];
-        foreach ($categoriasDisponibles as $nombreGenero) {
-            $categoriasRender[] = [
-                "id" => $nombreGenero,  // usar el nombre como id
+        $generosRender = [];
+        foreach ($generosDisponibles as $nombreGenero) {
+            $generosRender[] = [
+                "id" => $nombreGenero,
                 "nombre" => $nombreGenero,
-                "selected" => ($categoriaSeleccionada === $nombreGenero) ? 'selected' : ''
+                "selected" => ($generoSeleccionado === $nombreGenero) ? 'selected' : ''
             ];
         }
 
@@ -38,8 +38,8 @@ class Catalogo extends PublicController {
         $viewData = [
             "mensaje" => "Librería",
             "libreria" => $Libros,
-            "categorias" => $categoriasRender,
-            "selected_null" => ($categoriaSeleccionada === null) ? 'selected' : '',
+            "generos" => $generosRender,
+            "selected_genero_null" => ($generoSeleccionado === null) ? 'selected' : '',
             "carrito_count" => $carritoCount
         ];
 

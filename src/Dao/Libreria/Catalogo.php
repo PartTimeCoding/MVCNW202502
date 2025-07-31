@@ -5,7 +5,6 @@ namespace Dao\Libreria;
 use Dao\Table;
 
 class Catalogo extends Table {
-    // Géneros como texto simple
     public const generos = [
         'Fantasía',
         'Terror',
