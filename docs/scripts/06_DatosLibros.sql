@@ -50,3 +50,4 @@ INSERT INTO libros (
 ('Drácula', 'Clásico de la literatura gótica', 1897, 13, 12, 'Terror', 380.00, 'https://via.placeholder.com/300x180?text=Dracula', 60, 'ACT'),
 ('Los juegos del hambre', 'Distopía juvenil de supervivencia', 2008, 14, 13, 'Ciencia Ficción', 550.00, 'https://via.placeholder.com/300x180?text=Juegos+Hambre', 100, 'ACT'),
 ('La sombra del viento', 'Misterio literario en Barcelona', 2001, 15, 14, 'Terror', 470.00, 'https://via.placeholder.com/300x180?text=Sombra+Viento', 95, 'ACT');
+
